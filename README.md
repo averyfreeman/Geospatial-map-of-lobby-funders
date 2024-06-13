@@ -1,5 +1,5 @@
 # Charting lobby money in WA from outside state
-#### From the 2016 through 2024
+#### From the 2016 through 2023
 ---
 * License: GPL-3.0-or-later
 
