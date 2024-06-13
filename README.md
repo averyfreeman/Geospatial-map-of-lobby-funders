@@ -19,9 +19,9 @@ I plan to release more charts done with other information from this dataset.  I 
 
 #### TL;DR how do I run these chart generators?
 ---
-clone repo - dataset and shape file are included (and some **recordings** if you're impatient)
-run `test_setup.py` to make sure you have the system dependencies
-run either `bar_chart.py` or `geospatial_map.py` - these can be run directly from prompt with something like:
+ 1. clone repo - dataset and shape file are included (and some **recordings** if you're impatient)
+ 2. run `test_setup.py` to make sure you have the system dependencies (or skip it if you're sure you have them already)
+ 3. run either `bar_chart.py` or `geospatial_map.py` - these can be run directly from prompt with something like:
 
 ```
 ❯ ./bar_chart.py
