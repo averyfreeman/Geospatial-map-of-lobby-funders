@@ -141,7 +141,7 @@ matplotblog: [https://matplotlib.org/matplotblog](https://matplotlib.org/matplot
 
 matplotlib user manual: [https://matplotlib.org/stable/users/index.html](https://matplotlib.org/stable/users/index.html)
 
-nuCamp coding bootcamp Python DevOps course:[[https://www.nucamp.co/bootcamp-overview/back-end-sql-devops-python](https://www.nucamp.co/bootcamp-overview/back-end-sql-devops-python)
+nuCamp coding bootcamp Python DevOps course: [https://www.nucamp.co/bootcamp-overview/back-end-sql-devops-python](https://www.nucamp.co/bootcamp-overview/back-end-sql-devops-python)
 
 Trenton McKinney answering question about animating with a shapefile on [Stack Overflow: https://stackoverflow.com/questions/78609465/animating-yearly-data-from-pandas-in-geopandas-with-matplotlib-funcanimation](https://stackoverflow.com/questions/78609465/animating-yearly-data-from-pandas-in-geopandas-with-matplotlib-funcanimation)
 
