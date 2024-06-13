@@ -10,8 +10,8 @@
 ---
 I was looking through [data.wa.gov](https://data.wa.gov) for a dataset to do a project with, and I saw that the [PDC](https://pdc.wa.gov) has information from lobbyist disclosures on who is funding their lobbying efforts.  I thought that was really interesting, so I looked into it more, and one of the things that really struck me was from how much of the money is coming from outside of WA.  The first name that really jumped out at me was Advanced Check Cashing in Virginia, since they were at the top when viewing alphabetically, but they were only one of hundreds of entities in other states that lobby us every year.
 
+
 I plan to release more charts done with other information from this dataset.  I have a blog site I have a couple more charts on at [developer monkey / unixgreybeard.org](https://develmonk.com/2024/06/12/graphing-numbers-with-geospatial-boundaries-using-geopandas-and-matplotlib/) which I will certainly be updating as soon as possible.  Right now, these standalone project charts in this repo only show state origin granularity, but there are some different directions I've gone charting the data, with top lobbyists by aggregate spending, top political donors, and top ballot measure backers (or opposers). The other charts are in a jupyter notebook, and I will be creating a separate repo for it asap.
----
 
 
 ![demo of bar_chart.py](recordings/us_states_bar_charts_animation.gif?raw=true "demo of bar_chart.py")
