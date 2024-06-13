@@ -147,4 +147,4 @@ Trenton McKinney answering question about animating with a shapefile on [Stack O
 
 Mini-tutorial for mapping population growth: [https://www.youtube.com/watch?v=2isVrKpAx6Q](https://www.youtube.com/watch?v=2isVrKpAx6Q)
 
-Mini-tutorial for animated time series:[https://www.youtube.com/watch?v=K1LezPnJZtk](https://www.youtube.com/watch?v=K1LezPnJZtk)
+Mini-tutorial for animated time series: [https://www.youtube.com/watch?v=K1LezPnJZtk](https://www.youtube.com/watch?v=K1LezPnJZtk)
