@@ -137,14 +137,14 @@ Geographic boundary files - United States outline: https://www.census.gov/geogra
 
 #### Thanks and resources:
 
-[matplotblog:](https://matplotlib.org/matplotblog/)
+matplotblog: [https://matplotlib.org/matplotblog](https://matplotlib.org/matplotblog/)
 
-[matplotlib user manual:](https://matplotlib.org/stable/users/index.html)
+matplotlib user manual: [https://matplotlib.org/stable/users/index.html](https://matplotlib.org/stable/users/index.html)
 
-[nuCamp coding bootcamp Python DevOps course:](https://www.nucamp.co/bootcamp-overview/back-end-sql-devops-python)
+nuCamp coding bootcamp Python DevOps course:[[https://www.nucamp.co/bootcamp-overview/back-end-sql-devops-python](https://www.nucamp.co/bootcamp-overview/back-end-sql-devops-python)
 
-Trenton McKinney answering question about animating with a shapefile on [Stack Overflow: ](https://stackoverflow.com/questions/78609465/animating-yearly-data-from-pandas-in-geopandas-with-matplotlib-funcanimation)
+Trenton McKinney answering question about animating with a shapefile on [Stack Overflow: https://stackoverflow.com/questions/78609465/animating-yearly-data-from-pandas-in-geopandas-with-matplotlib-funcanimation](https://stackoverflow.com/questions/78609465/animating-yearly-data-from-pandas-in-geopandas-with-matplotlib-funcanimation)
 
-Mini-tutorial for [mapping population growth:](https://www.youtube.com/watch?v=2isVrKpAx6Q)
+Mini-tutorial for mapping population growth: [https://www.youtube.com/watch?v=2isVrKpAx6Q](https://www.youtube.com/watch?v=2isVrKpAx6Q)
 
-Mini-tutorial for [animated time series:](https://www.youtube.com/watch?v=K1LezPnJZtk)
+Mini-tutorial for animated time series:[https://www.youtube.com/watch?v=K1LezPnJZtk](https://www.youtube.com/watch?v=K1LezPnJZtk)
