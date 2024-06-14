@@ -3,11 +3,10 @@ import os
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation, PillowWriter, FFMpegWriter
+from matplotlib.animation import FuncAnimation, FFMpegWriter
 from colour import Color
 
 def bar_chart():
-    print('uncomment docstring at bottom if you want to create a recording')
 
     our_cols = {
         'State': 'category',
@@ -75,7 +74,7 @@ def bar_chart():
     ax.tick_params(left=False)
     ax.get_xaxis().set_visible(False)
 
-    colorlist = list(Color('red').range_to(Color('blue'),21)) + list(Color('blue').range_to(Color('green'),21))
+    colorlist = list(Color('blue').range_to(Color('green'),21)) + list(Color('green').range_to(Color('red'),21))
     colors = []
     for color in colorlist:
         colors.append(color.hex_l)
@@ -86,17 +85,26 @@ def bar_chart():
 
         ax.bar_label(states, labels=[f'{round(value, -3):,.0f}' if value > 0 else '' for value in dfpr[year]], fmt='%.0f', color='black', alpha=0.8, padding=5, label_type='edge', font={'size': 9})
 
-        ax.set_title(f'Money from other states used to lobby Washington {year}', size=18, weight='bold')
+        ax.set_title(f'Money from other states used to lobby Washington {year}', size=20, weight='bold')
     
-    """ uncomment if you want to creat a recording
-    years = dfpr.columns[1:]
+    years = dfpr.columns[1:]  # skips States column, [1:-1] omits 8-yr
     animation = FuncAnimation(fig, animate, frames=years, repeat=True, interval=1000)
 
-    writer = PillowWriter(fps=1)
-    animation.save('../recordings/us_states_bar_charts_animation.gif', writer=writer)
-    """
 
-    # plt.show()  
+    ffmpeg = FFMpegWriter(fps=1)
+    with ffmpeg.saving(fig, 'recordings/out_of_state_lobby_money_bar_chart.mp4', dpi=600):
+        for year in years :
+            animate(year)
+            ffmpeg.grab_frame()
 
+    with ffmpeg.saving(fig, 'recordings/out_of_state_lobby_money_bar_chart.gif', dpi=300):
+        for year in years :
+            animate(year)
+            ffmpeg.grab_frame()
+            print(f'recording year {year}')
+        print(f'recording {os.path.basename(__file__)} complete')    
+
+    plt.show()
+    
 if __name__ == '__main__':
     bar_chart()

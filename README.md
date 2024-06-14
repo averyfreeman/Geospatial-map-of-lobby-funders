@@ -3,8 +3,33 @@
 ---
 * License: GPL-3.0-or-later
 
-![demo of geospatial_map.py](recordings/wa_out_of_state_lobbying_geospatial_anim.gif?raw=true "demo of geospatial_map.py")
+![demo of geospatial_map.py](https://develmonk.com/images/out_of_state_lobby_money_geospatial_map.gif?raw=true "demo of geospatial_map.py")
 
+
+#### Repo contents:
+---
+```shell
+❯ lsd --tree --sort extension
+ .
+├──  us_states                     # shape file
+├──  recordings                    # required for build output
+├──  tools
+│   ├──  optimizer_for_states.py
+│   └──  plot_color_gradients.py
+├──  Dockerfile
+├──  states_no_wa.csv
+├──  README.md
+├──  geospatial_map.py              # mapped numbers animation
+├──  bar_chart.py                   # bar chart animation
+├──  test_setup.py
+├──  docker-entrypoint.sh
+├──  container_enter.sh             # interactive shell
+├──  container_run.sh               # run command for docker
+├── 󰌠 requirements.txt
+└──  LICENSE.txt                    # gpl ftw
+
+
+```
 
 #### Inspiration:
 ---
@@ -14,11 +39,42 @@ I was looking through [data.wa.gov](https://data.wa.gov) for a dataset to do a p
 I plan to release more charts done with other information from this dataset.  I have a blog site I have a couple more charts on at [developer monkey / unixgreybeard.org](https://develmonk.com/2024/06/12/graphing-numbers-with-geospatial-boundaries-using-geopandas-and-matplotlib/) which I will certainly be updating as soon as possible.  Right now, these standalone project charts in this repo only show state origin granularity, but there are some different directions I've gone charting the data, with top lobbyists by aggregate spending, top political donors, and top ballot measure backers (or opposers). The other charts are in a jupyter notebook, and I will be creating a separate repo for it asap.
 
 
-![demo of bar_chart.py](recordings/us_states_bar_charts_animation.gif?raw=true "demo of bar_chart.py")
+![demo of bar_chart.py](https://develmonk.com/images/out_of_state_lobby_money_bar_chart.gif?raw=true "demo of bar_chart.py")
 
 
 #### TL;DR how do I run these chart generators?
 ---
+The easiest thing to do is run the chart recorders in a docker image, that way the dependencies are isolated from your system completely, and it returns the recordings in both `.gif` and `.mp4` format in the `$(pwd)/recordings` folder. 
+
+OCI version is available at [https://hub.docker.com/layers/averyfreeman/wa-lobbbyist-dataset-animations/latest/images/sha256-29806d38bfad41beec52fc895ae0d3eb284ff62e22cf3125f58551459b41bcc7?context=repo](https://hub.docker.com/layers/averyfreeman/wa-lobbbyist-dataset-animations/latest/images/sha256-29806d38bfad41beec52fc895ae0d3eb284ff62e22cf3125f58551459b41bcc7?context=repo) - it requires a `recordings` folder for the output
+
+```shell
+sha256: e2263a66e1362e69867771a0dc789b98a78ed9048da1721b9befc25966e8aa52
+
+# pull image and check against hash:
+❯ docker pull averyfreeman/wa-lobbbyist-dataset-recordings:latest
+
+# verify
+❯ docker image inspect --format '{{.ID}}' averyfreeman/wa-lobbbyist-dataset-animations
+sha256:e2263a66e1362e69867771a0dc789b98a78ed9048da1721b9befc25966e8aa52
+
+# in your workdir (if not already present):
+❯ mkdir recordings
+
+# container_run.sh - for recordings only:
+❯ docker run -v $(pwd)/recordings:/app/recordings -p 8000:8000 averyfreeman/wa-lobbbyist-dataset-recordings:latest
+
+# container_enter.sh - to run interactively:
+❯ docker run -v $(pwd)/recordings:/app/recordings -p 8000:8000 -it averyfreeman/wa-lobbyist-dataset-animations /bin/bash
+```
+
+Please update the data and the analysis to your liking, these files are definitely meant to be a guide for other people looking for ideas and tools to realize their own data visualization projects. You could create a devcontainer and isolate the project from your base system even while altering the source code, as well. If you want to build the container yourself, 
+
+ 1. clone repo - dataset and shapefile are included
+ 2. run docker build . 
+
+If you want to create a non-containerized local build environment, I included a little test script to make sure you have the dependencies you need installed:
+
  1. clone repo - dataset and shape file are included (and some **recordings** if you're impatient)
  2. run `test_setup.py` to make sure you have the system dependencies (or skip it if you're sure you have them already)
  3. run either `bar_chart.py` or `geospatial_map.py` - these can be run directly from prompt with something like:
@@ -32,7 +88,7 @@ Along with `test_setup.py`, if `bar_chart.py` or `geospatial_map.py` don't run d
 
 #### A note about system requirements:
 ---
-My python projects tend to use `rye` for dependency management and `virtualenv` for encapsulation. This project uses neither - instead, I relied on system libraries, since it allowed for easier access to front-end frameworks like `Tkinter` and frame grabbing software `ffmpeg`.  I have another repo I am creating for the same dataset that has a `jupyter-notebook` for doing quicker demonstrations of code segments. That project relies on `venv`, but this one does not.
+This project uses neither `virtualenv`, `rye`, or `pip freeze` for dependency management or encapculation - instead, I found it easier to rely on system libraries, since it allowed access to `Tkinter`, which I found to be painful trying to install into a `venv`.  That does mean it has the potential to pollute your system libraries if you decide to build it locally.  That's also one of the reasons I wanted to make sure its build system was available from within a container. I have another repo I will be releasing soon using the same dataset with a `jupyter-notebook`, and it relies on `venv`, but getting `Tkinter` to work from within `venv` for this project seemed rather unworkable, so that's the reason for my divergence from a more typical project workflow.
 
 
 #### Checking for system python libraries:
@@ -132,7 +188,9 @@ Year |	number |	The calendar year in which an employer hired a lobbyist.
 #### Source of geographic boundary files: US Census Bureau
 ---
 
-Geographic boundary files - United States outline: https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html
+Geographic boundary files - United States outline: [https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html](https://www.census.gov/geographies/mapping-files/time-series/geo/cartographic-boundary.html)
+
+Tiny web server written in go [on gist.github.com:](https://gist.githubusercontent.com/paulmach/7271283/raw/2a1116ca15e34ee23ac5a3a87e2a626451424993/serve.go)
 
 
 #### Thanks and resources:

@@ -1,14 +1,14 @@
 #!/usr/bin/env python3
 import os
-from pathlib import Path
 import numpy as np
 import pandas as pd
 import geopandas as gpd
 import matplotlib.pyplot as plt
-from matplotlib.animation import FuncAnimation, PillowWriter
+from matplotlib.ticker import FuncFormatter
+from matplotlib.animation import FuncAnimation, FFMpegWriter
 
 def geospatial_map():
-    print('uncomment docstring at bottom if you want to create a recording')
+
     our_cols = {
         'State': 'category',
         'Year': 'int',
@@ -24,10 +24,10 @@ def geospatial_map():
         clist.append(col)
 
     cwd = os.getcwd()
-    relativecsv = '/states_no_wa.csv'
-    relativeshape = '/us_states/cb_2018_us_state_500k.shp'
-    csvfile = cwd + relativecsv 
-    shapefile = cwd + relativeshape 
+    relcsv = '/states_no_wa.csv'
+    relshape = '/us_states/cb_2018_us_state_500k.shp'
+    csvfile = cwd + relcsv 
+    shapefile = cwd + relshape 
 
     df = pd.read_csv(csvfile, dtype=our_cols, usecols=clist)
 
@@ -39,14 +39,23 @@ def geospatial_map():
     df['Year'] = df['Year'].fillna(0).astype(int)
     df['Money'] = df['Money'].fillna(0).astype(float)
 
-    dfp = df.pivot_table(index='State', columns='Year', values='Money', observed=False)
+    """ pivoting table aggregates values by year """
+    dfp = df.pivot_table(index='State', columns='Year', values='Money', observed=False, aggfunc='sum')
     dfp = dfp.fillna(value=0).astype(float)
 
+    first_yr = dfp.columns[0]            #    2016
+    last_yr = dfp.columns[-1]            #    2023
+    total_mean = dfp.mean().mean()       # 391,133
+    total_median = dfp.median().median() # 141,594
+
+    """ aggregates all annual figures into total aggregate column """
     dfp['8 year total'] = dfp[2016].astype(float)
-    for year in range(2017, 2023, 1):
+    for year in range(first_yr, (last_yr + 1), 1):
         dfp['8 year total'] += dfp[year]
 
     years = dfp.columns
+
+    """ loads the shape file and merges it with the dataset """
     shape = gpd.read_file(shapefile)
     shape = pd.merge(
         left=shape,
@@ -56,7 +65,7 @@ def geospatial_map():
         how='right'
     )
 
-    fig, ax = plt.subplots(figsize=(15, 8))
+    fig, ax = plt.subplots(figsize=(12, 8))
 
     xlim = (shape.total_bounds[0], shape.total_bounds[2])
     ylim = (shape.total_bounds[1], shape.total_bounds[3])
@@ -64,11 +73,17 @@ def geospatial_map():
     ax.set_ylim(ylim)
 
     boundary = shape.boundary.plot(ax=ax, edgecolor='black', linewidth=0.3)
-    norm = plt.Normalize(vmin=dfp.iloc[:, 1:7].min().min(), vmax=dfp.iloc[:, 1:7].max().max())
+
+    all_cols_min = dfp.iloc[:, 0:8].min().min()
+    all_cols_max = dfp.iloc[:, 0:8].max().max()  # ~6M, no movement
+    upper_bounds = (total_median * 2)  
+
+    norm = plt.Normalize(vmin=all_cols_min, vmax=upper_bounds)
+    comma_fmt = FuncFormatter(lambda x, _: f'${round(x, -3):,.0f}')
 
     sm = plt.cm.ScalarMappable(cmap='RdBu_r', norm=norm)
     sm.set_array([])  # Only needed for adding the colorbar
-    colorbar = fig.colorbar(sm, ax=ax, orientation='horizontal', shrink=0.5, format='%.0f')
+    colorbar = fig.colorbar(sm, ax=ax, orientation='horizontal', shrink=0.7, format=comma_fmt)
 
     def animate(year):
         ax.clear()
@@ -92,21 +107,22 @@ def geospatial_map():
             ax=ax, column=year, legend=False, cmap='RdBu_r', norm=norm
         )
 
-    years = dfp.columns[1:]  # Skip the 'State' column
+    years = dfp.columns[1:]  # Skip the 'State' column, [1:-1] to omit 8-yr total
     animation = FuncAnimation(fig, animate, frames=years, repeat=True, interval=1000)
 
-    """ Save the animation as a GIF 
-    writer = PillowWriter(fps=1)
-    animation.save('../recordings/wa_out_of_state_lobbying_geospatial_anim.gif', writer=writer)
-    or can use ffmpeg - slightly different process
-    note: ffmpeg is is extension-aware (mp4, gif, avi, mkv, etc.)
     ffmpeg = FFMpegWriter(fps=1)
-    with ffmpeg.saving(fig, '../recordings/horizontal_bar_chart_animation.mp4', dpi=600):
+    with ffmpeg.saving(fig, 'recordings/out_of_state_lobby_money_geospatial_map.mp4', dpi=600):
         for year in years :
             animate(year)
             ffmpeg.grab_frame()
-    plt.close()  # if you only want to save the animation - comment out plt.show()
-    """
+
+    with ffmpeg.saving(fig, 'recordings/out_of_state_lobby_money_geospatial_map.gif', dpi=300):
+        for year in years :
+            animate(year)
+            ffmpeg.grab_frame() 
+            print(f'recording year {year}')
+        print(f'recording {os.path.basename(__file__)} complete')    
+
     plt.show()
 
 if __name__ == '__main__':

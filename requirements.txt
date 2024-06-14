@@ -1,0 +1,9 @@
+# 1. `pip freeze` with system versions
+#    resulted in build failure, ymmv 
+# 2. geopandas will be missing deps
+#    if installed before matplotlib
+matplotlib
+colour
+numpy
+pandas
+geopandas
