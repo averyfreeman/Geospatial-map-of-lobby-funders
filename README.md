@@ -46,7 +46,7 @@ I plan to release more charts done with other information from this dataset.  I 
 ---
 The easiest thing to do is run the chart recorders in a docker image, that way the dependencies are isolated from your system completely, and it returns the recordings in both `.gif` and `.mp4` format in the `$(pwd)/recordings` folder. 
 
-OCI version is available at [https://hub.docker.com/layers/averyfreeman/wa-lobbbyist-dataset-animations/latest/images/sha256-29806d38bfad41beec52fc895ae0d3eb284ff62e22cf3125f58551459b41bcc7?context=repo](https://hub.docker.com/layers/averyfreeman/wa-lobbbyist-dataset-animations/latest/images/sha256-29806d38bfad41beec52fc895ae0d3eb284ff62e22cf3125f58551459b41bcc7?context=repo) - it requires a `recordings` folder for the output
+OCI version is available at [https://hub.docker.com/r/averyfreeman/wa-lobbbyist-dataset-animations](https://hub.docker.com/r/averyfreeman/wa-lobbbyist-dataset-animations) - it requires a `recordings` folder for the output
 
 ```shell
 sha256: e2263a66e1362e69867771a0dc789b98a78ed9048da1721b9befc25966e8aa52
